@@ -30,12 +30,12 @@ public class FirstExample {
 }
 ```
 > ##### 실행결과
-> 1
-> 2
-> 3
-> 4
-> 5
-> 6
+> 1  
+> 2  
+> 3  
+> 4  
+> 5  
+> 6  
 
 #### 2.1.2 subscribe() 함수
 동작시키기 원하는 것을 사전에 정의해둔 다음 실제 실행되는 시점을 조절하기 위해 사용하는 것  
@@ -63,9 +63,9 @@ Observable<Integer> source = Observable.fromArray(arr);
 source.subscribe(System.out::println);
 ```
 > ##### 실행결과
-> 100
-> 200
-> 300
+> 100  
+> 200  
+> 300  
 
 #### 2.1.5 fromIterable() 함수
 Iterable 인터페이스를 구현한 클래스에서 Observable 객체를 생성하는 방법  
@@ -81,9 +81,9 @@ Observable<String> source = Observable.fromIterable(names);
 source.subscribe(System.out::println);
 ```
 > ##### 실행결과
-> Jelly
-> William
-> Bob
+> Jelly  
+> William  
+> Bob  
 
 #### 2.1.6 fromCallable() 함수
 Callable 인터페이스와의 연동을 위해 사용
@@ -102,7 +102,15 @@ source.subscribe(System.out::println);
 Future 객체에서 사용  
 보통 Executor 인터페이스를 구현한 클래스에 Callable 객체를 인자로 넣어 Future 객체를 반환한다.
 > ##### 예시
+```java
+Future<String> future = Executors.newSingleThreadExcutor().submit(() ->{
+	Thread.sleep(1000);
+	return "Hello Future";
+});
 
+Observable<String> source = Observable.fromFuture(future);
+source.subscribe(System.out::println);
+```
 
 #### 2.1.8 fromPublisher() 함수
 사용하지 않을 것 같음
@@ -115,3 +123,33 @@ Observable과 거의 같음
 
 #### 2.2.2 Observable에서 Single 클래스 사용
 Single은 Observable의 특수한 형태이므로 Observable에서 변환.
+
+> ##### 예시
+```java
+1. 기존 Observable에서 Single 객체로 변환하기
+Observable<String> source = Observable.just("Hello Single");
+Single.fromObservable(source)
+	.subscribe(System.out::pirntln);
+
+2. single() 함수를 호출해 Single 객체 생성하기.
+Observable.just("Hello Single")
+	.single("default item")
+	.subscribe(System.out::println);
+
+3. first() 함수를 호출해 Single 객체 생성하기.
+String[] colors = {"Red", "Blue", "Gold"};
+Observable.fromArray(colors)
+	.first("default value")
+	.subscribe(System.out::println);
+
+4. empty Observable에서 Single 객체 생성하기.
+Observable.empty()
+	.single("default value")
+	.subscribe(System.out::println);
+
+5. take() 함수에서 Single 객체 생성하기.
+Observable.just(new Order("ORD-1"), new Order("ORD-2"))
+	.take(1)
+	.single(new Order("default order"))
+	.subscribe(System.out::println);
+```
