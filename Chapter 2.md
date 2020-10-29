@@ -153,3 +153,21 @@ Observable.just(new Order("ORD-1"), new Order("ORD-2"))
 	.single(new Order("default order"))
 	.subscribe(System.out::println);
 ```
+
+#### 2.4 뜨거운 Observable
+Observable에는 뜨거운 Observable과 차카운 Observable이 있다.  
+> ##### 차가운 Observable
+> Observable을 선언하고 just(), fromIterable() 등 함수를 호출해도 옵저버가 subscribe() 함수를 호출하여 구독하지 않으면 데이터를 발행하지 않는다.
+> ex)웹 요청, 데이터 베이스 쿼리와 파일 읽기 등 
+> ##### 뜨거운 Observable
+> 구독자가 존재 여부와 관계없이 데이터를 발행하는 Observable
+> ex) 마우스 이벤트, 키보드 이벤트, 시스템 이벤트, 센서 데이터와 주식가격 등
+> 주의할점: Observable에서 데이터를 발행하는 속도와 구독자가 처리하는 속도의 차이가 클때 때 발생하는 배압을 고려해야 함
+차가운 Observable을 뜨거운 Observable 객체로 변환하는 방법은 Subject 객체를 만들거나 ConnectableObservable 클래스를 활용하는 방법이 있다.
+
+#### 2.5 Subject 클래스
+Observable의 속성과 구독자의 속성이 모두 있음.  
+Observable처럼 데이터를 발행할 수도 있고 구독자처럼 발행된 데이터를 바로 처리할 수도 있다. 
+
+#### 2.5.1 AsyncSubject 클래스
+Observable에서 발행한 마지막 데이터를 얻어올 수 있는 클래스
